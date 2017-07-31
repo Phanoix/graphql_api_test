@@ -31,13 +31,6 @@ function graphql_entry_point(){
 	    });
 	}
 	try {
-	    // Initialize our fake data source
-	    DataSource::init();
-	    // Prepare context that will be available in all field resolvers (as 3rd argument):
-	    $appContext = new AppContext();
-	    $appContext->viewer = DataSource::findUser('1'); // simulated "currently logged-in user"
-	    $appContext->rootUrl = 'http://localhost:8080';
-	    $appContext->request = $_REQUEST;
 	    // Parse incoming query and variables
 	    if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
 	        $raw = file_get_contents('php://input') ?: '';
@@ -57,7 +50,7 @@ function graphql_entry_point(){
 	        $schema,
 	        $data['query'],
 	        null,
-	        $appContext,
+	        null,
 	        (array) $data['variables']
 	    );
 	    // Add reported PHP errors to result (if any)
